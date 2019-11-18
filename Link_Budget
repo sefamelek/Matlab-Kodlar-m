@@ -1,0 +1,63 @@
+clear;clc;
+B=input('Channel Banwith(kHz)[Kanal Bant Genişliği]:')*1000;
+%N=input('noise power (watts) [Gürültü Gücü]:');
+%C = channel capacity (bits/s)
+%B = channel bandwidth (Hz)
+%S = signal strength (watts)
+%N = noise power (watts)
+%C=B*log2(1+S/N);
+format short
+k=1.38*(10^(-23));
+T=290;
+%S=input('signal strength (watts)[Sinyal Gücü]:');
+
+%N = noise power (watts)
+%k = Boltzman’s constant (1.38 x 10-23 J/K)
+%T = system temperature, usually assumed to be 290K
+%B = channel bandwidth (Hz)
+
+N=10*log10(k*T*B*1000);
+fprintf('N=%gdBm\n',N);
+NF=input('Noise Figure(dB):');
+RNF=N+NF;
+fprintf('Receiver Noise Floor:%gdBm\n',RNF);
+
+%D = the distance between receiver and transmitter
+%w = free space wavelength = c/f
+%c = speed of light (3 x 108 m/s)
+%f = frequency (Hz)
+
+
+a=input('Lfs değeri belli mi,Y/N [Y][N]:','s');
+if a=='N';
+C=3*(10^8);
+f=input('Frequency(MHz)[Frekans]:')*1000000;
+w=C/f;
+D=input('the distance between receiver and transmitter(m) [Alıcı ve Verici Arasındaki Mesafe]:');
+L=20*log10(4*pi*D/w);
+fprintf('Propagation Loss (Lfs):%gdB\n',L); 
+fprintf('Lambda:%g m\n',w);
+
+else a=='Y';
+L=input('Lfs değeri(dB):');
+end  
+%Eb = Energy required per bit of information
+%No= thermal noise in 1Hz of bandwidth
+%R = system data rate
+%BT= system bandwidth
+BT=input('System Bandwith(kHz) [Sistem Bant Genişliği]:')*1000;
+%Eb=input('Energy required per bit of information [Bilgi Biti Başına Gereken Enerji]:');
+R=input('System Data Rate(kbps) [Sistem Veri Oranı]:')*1000;
+%No=input('thermal noise in 1Hz of bandwidth [1 Hz Bant Genişliğinde Termal Gürültü]:');
+EbNo=input('Tabloda verilen Eb/No oranı(dB):');
+EN=10^(EbNo/10);
+SNR=EN*(R/BT);  
+fprintf('SNR:%gdB\n',SNR);
+PRX=RNF+SNR;
+FM=input('Fade Margin(dB):');
+Gtx=input('Gtx(dB):');
+Grx=input('Grx(dB):');
+fprintf('Prx:%gdBm\n',PRX);
+Ptx=PRX+L+FM-Gtx-Grx;
+fprintf('Transmitter Power (Verici Gücü):%gdBm\n ',Ptx);
+
