@@ -1,0 +1,20 @@
+Ptx=input('Tx Power(dBm):');
+Ltx=input('Tx Cable loss(dB):');
+Gtx=input('Tx Antenna Gain(dBi):');
+Srx=input('Receive Sensitivity(dBm):');
+
+Total_LB=Ptx+Ltx+Gtx-Srx;
+fprintf('Total Link Budget:%g\n',Total_LB);
+if Total_LB==189;
+    fprintf('\nNarrow Band IoT\n');
+elseif Total_LB==174;
+    fprintf('\nNB-Fi(WavIoT)\n)');
+elseif Total_LB==164;
+    fprintf('\nLoRaWAN\n');
+elseif Total_LB==156;
+    fprintf('\nU-NB(Sigfox)\n');
+elseif Total_LB==168;
+    fprintf('\nRPMA(Ingenu)\n');
+elseif Total_LB==176;
+    fprintf('\nLTE-M\n');
+end
